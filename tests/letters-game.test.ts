@@ -33,6 +33,18 @@ describe('letters game', () => {
     expect(challenge.scrambledLetters.sort()).toEqual(challenge.word.split('').sort());
   });
 
+  it('uses shorter words for younger children and longer words for older children', () => {
+    const younger = createBuildWordChallenge(4, 0);
+    const older = createBuildWordChallenge(8, 10);
+    expect(younger.word.length).toBeLessThanOrEqual(3);
+    expect(older.word.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it('keeps build-word hint aligned with the first letter', () => {
+    const challenge = createBuildWordChallenge(7, 3);
+    expect(challenge.hint).toContain(challenge.word[0]);
+  });
+
   it('appends letters without exceeding limit', () => {
     expect(appendLetter('SO', 'L')).toBe('SOL');
     expect(appendLetter('ABCDEFGHIJKL', 'M')).toBe('ABCDEFGHIJKL');

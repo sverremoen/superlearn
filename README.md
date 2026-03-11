@@ -1,16 +1,32 @@
 # Superlearn
 
-Superlearn er et touch-first læringsskall for barn, bygget med Next.js App Router, React, TypeScript og Tailwind CSS.
+Superlearn er en touch-first læringsapp for barn, bygget med Next.js App Router, React, TypeScript og Tailwind CSS.
 
-## Hva som er levert i FASE A
+## Status akkurat nå
 
-- profilvelger ved oppstart med lokale profiler
-- minst 12 forhåndsdefinerte avatarvalg
-- modulvalg for **Bokstaver** og **Matte**
-- grunnleggende progresjons- og belønningsmodell per profil
+Kjernen er nå spillbar:
+- profilvelger med flere barn og separat progresjon
+- minst 12 avatarvalg
+- **Bokstaver** med to spillmodi:
+  - bokstavjakt
+  - bygg ord
+- **Matte** med to spillmodi:
+  - tell og velg
+  - pluss og minus
+- stjerner og klistremerker per profil
 - robust lokal persistering med migrering/fallback
 - error/fallback-UI for ødelagt lagring og runtime-feil
-- plassholderruter for bokstaver og matte
+
+## Verifisert
+
+```bash
+npm test        # 30 tester grønne
+npm run lint
+npm run typecheck
+npm run build
+```
+
+Playwright-flowene for kritiske brukerreiser er skrevet, men full kjøring er foreløpig blokkert i dette miljøet av manglende systembiblioteker for headless Chromium. Se `docs/QA_CHECKLIST.md` for status og detaljer.
 
 ## Kom i gang lokalt
 
@@ -37,14 +53,19 @@ npm run test:e2e
 - `src/app/` – App Router-ruter og global layout
 - `src/components/` – UI-komponenter og app-shell
 - `src/data/` – statiske valg som avatarer
-- `src/lib/` – typer, progresjonslogikk og lokal lagring
+- `src/lib/` – typer, progresjonslogikk, spilllogikk og lokal lagring
 - `tests/` – unit/integration/e2e
+- `docs/` – plan, QA-bevis og release-notater
 
 ## Lokale data
 
 Appen lagrer i `localStorage` under nøkkelen `superlearn.app`.
 Hvis data blir korrupt, vises en trygg reset-knapp i UI.
 
-## Avgrensning i denne fasen
+## Neste release-gater
 
-Bokstaver- og mattespillene er **ikke** ferdig implementert ennå. I FASE A leveres navigasjon, dataflyt, persistering og fundament for neste fase.
+Før issue #1 kan regnes som release candidate gjenstår hovedsakelig:
+- grønn Playwright-kjøring
+- dokumentert mobil/iPad-QA med skjermbilder
+- Lighthouse-bevis
+- Dockerfile/Coolify deploy og verifisert URL

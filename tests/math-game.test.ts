@@ -25,6 +25,17 @@ describe('math game', () => {
     expect(challenge.answer).toBeGreaterThanOrEqual(0);
   });
 
+  it('increases answer range for older children', () => {
+    const younger = createSumChallenge(5, 4);
+    const older = createSumChallenge(8, 4);
+    expect(older.answer).toBeGreaterThan(younger.answer);
+  });
+
+  it('keeps all answer choices unique', () => {
+    const challenge = createSumChallenge(8, 3);
+    expect(new Set(challenge.choices).size).toBe(challenge.choices.length);
+  });
+
   it('validates math answers', () => {
     expect(isMathAnswerCorrect(7, 7)).toBe(true);
     expect(isMathAnswerCorrect(7, 8)).toBe(false);
