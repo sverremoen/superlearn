@@ -62,10 +62,36 @@ npm run test:e2e
 Appen lagrer i `localStorage` under nøkkelen `superlearn.app`.
 Hvis data blir korrupt, vises en trygg reset-knapp i UI.
 
+## Docker / Coolify
+
+Appen kan nå bygges som container for Coolify eller annen standard Docker-runtime.
+Den prod-buildede appen kjører via Next.js standalone-output og lytter på `$PORT`.
+
+```bash
+docker build -t superlearn .
+docker run --rm -p 3000:3000 -e PORT=3000 superlearn
+```
+
+For Coolify:
+- bygg direkte fra repoet med `Dockerfile`
+- sett eventuelt `PORT=3000` eksplisitt
+- health/smoke-check: åpne `/` og verifiser profilvelger + modulkort
+
+## Playwright-miljø
+
+I dette host-miljøet stopper headless Chromium før testene starter fordi systembiblioteket `libnspr4.so` mangler.
+Når hosten tillater det, er raskeste vei normalt:
+
+```bash
+npx playwright install chromium
+npx playwright install-deps chromium
+npm run test:e2e
+```
+
 ## Neste release-gater
 
 Før issue #1 kan regnes som release candidate gjenstår hovedsakelig:
-- grønn Playwright-kjøring
+- grønn Playwright-kjøring i miljø med nødvendige Chromium-deps
 - dokumentert mobil/iPad-QA med skjermbilder
 - Lighthouse-bevis
-- Dockerfile/Coolify deploy og verifisert URL
+- faktisk Coolify-deploy og verifisert URL

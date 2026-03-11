@@ -15,6 +15,8 @@ Denne sjekklisten dokumenterer faktisk verifisering utført i repoet, samt åpne
   - **Blokkert av miljøet**, ikke app-logikken
   - Første kjøring manglet Playwright Chromium lokalt
   - Etter installasjon av Chromium feilet kjøring fortsatt fordi host-miljøet mangler systembibliotek for headless Chromium (`libnspr4.so`)
+  - Feilen skjer før første side lastes, altså i browser-launch og ikke i selve app-flyten
+  - Anbefalt host-fix når privilegier finnes: `npx playwright install-deps chromium`
   - Konsekvens: Playwright-testene er skrevet og klare, men kan ikke fullkjøres i denne subagent-sesjonen uten ekstra host-avhengigheter
 
 ## Kritiske flows
