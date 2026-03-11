@@ -63,8 +63,10 @@ npm run build      -> ok
 
 - [x] Ingen kjente typefeil eller lint-feil i nåværende kode
 - [x] Progresjon per profil og per modul dekkes av eksisterende tester
-- [ ] Stress-test: 20 raske runder uten crash eller state-bugs
-- [ ] Console-clean verifisert under standard flyt
+- [x] Stress-test: 20 raske runder uten crash eller state-bugs
+  - Verifisert i `docs/qa/qa-smoke-report-2026-03-11.md`
+- [x] Console-clean verifisert under standard flyt
+  - Verifisert i `docs/qa/qa-smoke-report-2026-03-11.md` (0 console errors, 0 page errors)
 - [ ] Lighthouse Accessibility > 90
 - [ ] Lighthouse Best Practices > 90
 
