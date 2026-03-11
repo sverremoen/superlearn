@@ -24,9 +24,10 @@ npm test        # 30 tester grønne
 npm run lint
 npm run typecheck
 npm run build
+npm run test:e2e  # 6/6 grønne i Chromium
 ```
 
-Playwright-flowene for kritiske brukerreiser er skrevet, men full kjøring er foreløpig blokkert i dette miljøet av manglende systembiblioteker for headless Chromium. Se `docs/QA_CHECKLIST.md` for status og detaljer.
+Playwright-flowene for kritiske brukerreiser er nå grønne i Chromium. Det som fortsatt gjenstår er egen WebKit/Safari-verifisering; i dette miljøet stopper WebKit på manglende host-biblioteker. Se `docs/QA_CHECKLIST.md` for status og detaljer.
 
 ## Kom i gang lokalt
 
@@ -79,19 +80,20 @@ For Coolify:
 
 ## Playwright-miljø
 
-I dette host-miljøet stopper headless Chromium før testene starter fordi systembiblioteket `libnspr4.so` mangler.
+Chromium-kjøringen er nå verifisert grønn i dette repoet.
+Det som fortsatt er miljøblokkert er **WebKit/Safari-verifisering**; hosten mangler blant annet `libgtk-4.so.1`, `libgstreamer-1.0.so.0`, `libgraphene-1.0.so.0` og flere tilhørende biblioteker.
+
 Når hosten tillater det, er raskeste vei normalt:
 
 ```bash
-npx playwright install chromium
-npx playwright install-deps chromium
-npm run test:e2e
+npx playwright install webkit
+npx playwright install-deps webkit
+npm run test:e2e:webkit
 ```
 
 ## Neste release-gater
 
 Før issue #1 kan regnes som release candidate gjenstår hovedsakelig:
-- grønn Playwright-kjøring i miljø med nødvendige Chromium-deps
-- dokumentert mobil/iPad-QA med skjermbilder
+- WebKit/Safari-verifisering i miljø med nødvendige systembiblioteker
 - Lighthouse-bevis
 - faktisk Coolify-deploy og verifisert URL

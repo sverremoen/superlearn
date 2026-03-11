@@ -57,7 +57,8 @@ npm run build      -> ok
 - [x] iPad 1024×768: profilvelger, modulvalg, letters, math og progresjon dokumentert med skjermbilder
 - [x] Ingen horisontal scroll i mobiltest
 - [ ] Safari/WebKit-hensyn dokumentert med egen kjøring
-  - Ikke kjørt i egen WebKit-browser ennå
+  - WebKit-prosjekt er nå lagt inn i Playwright-konfigen (`npm run test:e2e:webkit`)
+  - Kjøring er fortsatt blokkert i dette miljøet av manglende host-biblioteker (`libgtk-4.so.1`, `libgstreamer-1.0.so.0`, `libgraphene-1.0.so.0`, m.fl.)
 
 ## Stabilitet og brukbarhet
 
