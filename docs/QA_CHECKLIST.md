@@ -2,59 +2,62 @@
 
 Oppdatert: 2026-03-11
 
-Denne sjekklisten dokumenterer faktisk verifisering utført i repoet, samt åpne blokkeringer som hindrer full release-gate akkurat nå.
+Denne sjekklisten dokumenterer faktisk verifisering utført i repoet og hva som fortsatt gjenstår før hele epicen kan regnes som helt ferdig.
 
 ## Automatiske quality gates
 
 - [x] `npm test` grønn
   - Resultat: **30 tester grønne**
+- [x] `npm run test:e2e` grønn
+  - Resultat: **6/6 Playwright-flows grønne**
 - [x] `npm run lint` grønn
 - [x] `npm run typecheck` grønn
 - [x] `npm run build` grønn
-- [ ] `npm run test:e2e` grønn
-  - **Blokkert av miljøet**, ikke app-logikken
-  - Første kjøring manglet Playwright Chromium lokalt
-  - Etter installasjon av Chromium feilet kjøring fortsatt fordi host-miljøet mangler systembibliotek for headless Chromium (`libnspr4.so`)
-  - Feilen skjer før første side lastes, altså i browser-launch og ikke i selve app-flyten
-  - Anbefalt host-fix når privilegier finnes: `npx playwright install-deps chromium`
-  - Konsekvens: Playwright-testene er skrevet og klare, men kan ikke fullkjøres i denne subagent-sesjonen uten ekstra host-avhengigheter
+
+### Kommando-output (kort)
+
+```text
+npm run test:e2e   -> 6 passed
+npm test           -> 30 passed
+npm run lint       -> ok
+npm run typecheck  -> ok
+npm run build      -> ok
+```
 
 ## Kritiske flows
 
 ### 1. Opprette profil + velge avatar
-- [x] Playwright-flow skrevet
-- [ ] Fullt kjørt grønt i dette miljøet
+- [x] Playwright-flow kjørt grønt
+- [x] Ny profil blir aktiv etter lagring
 
 ### 2. Bytte profil
-- [x] Playwright-flow skrevet
-- [ ] Fullt kjørt grønt i dette miljøet
+- [x] Playwright-flow kjørt grønt
+- [x] Aktiv profil oppdateres korrekt
 
 ### 3. Fullføre letters-øvelse og se progresjon oppdatert
-- [x] Playwright-flow skrevet
-- [x] Underliggende logikk verifisert i unit/integration
-- [ ] Fullt kjørt grønt i dette miljøet
+- [x] Playwright-flow kjørt grønt
+- [x] Progresjon oppdateres på hjemskjerm etter retur
 
 ### 4. Fullføre math-øvelse og se progresjon oppdatert
-- [x] Playwright-flow skrevet
-- [x] Underliggende logikk verifisert i unit/integration
-- [ ] Fullt kjørt grønt i dette miljøet
+- [x] Playwright-flow kjørt grønt
+- [x] Progresjon oppdateres på hjemskjerm etter retur
 
 ### 5. Refresh/restart: progresjon beholdes
-- [x] Playwright-flow skrevet
-- [x] Lagrings-/rehydreringslogikk verifisert i unit/integration
-- [ ] Fullt kjørt grønt i dette miljøet
+- [x] Playwright-flow kjørt grønt
+- [x] Lagret progresjon beholdes etter reload
 
 ### 6. Mobil viewport: ingen horisontal scroll og store trykkflater fungerer
-- [x] Playwright-flow skrevet
-- [ ] Fullt kjørt grønt i dette miljøet
+- [x] Playwright-flow kjørt grønt
+- [x] Verifisert i 390×844
 
 ## Mobil og iPad
 
-- [ ] Mobil 390×844: alle skjermer, ingen overlapp, ingen horisontal scroll
-  - Delvis dekket av skrevet Playwright-test, men ikke fullkjørt pga miljøblokkering
-- [ ] iPad 768×1024: alle skjermer, touch fungerer
-- [ ] iPad 1024×768: alle skjermer, touch fungerer
-- [ ] Safari/WebKit-hensyn dokumentert med kjøring
+- [x] Mobil 390×844: profilvelger, modulvalg, letters, math og progresjon dokumentert med skjermbilder
+- [x] iPad 768×1024: profilvelger, modulvalg, letters, math og progresjon dokumentert med skjermbilder
+- [x] iPad 1024×768: profilvelger, modulvalg, letters, math og progresjon dokumentert med skjermbilder
+- [x] Ingen horisontal scroll i mobiltest
+- [ ] Safari/WebKit-hensyn dokumentert med egen kjøring
+  - Ikke kjørt i egen WebKit-browser ennå
 
 ## Stabilitet og brukbarhet
 
@@ -67,24 +70,46 @@ Denne sjekklisten dokumenterer faktisk verifisering utført i repoet, samt åpne
 
 ## Skjermbilder / bevis
 
-- [ ] Profilvelger — mobil
-- [ ] Modulvalg — mobil
-- [ ] Letters-øvelse — mobil
-- [ ] Math-øvelse — mobil
-- [ ] Progresjonsskjerm — mobil
-- [ ] Tilsvarende iPad-visninger
+Alle skjermbilder ligger under `docs/qa/screenshots/`.
+
+### Mobil 390×844
+- [x] `docs/qa/screenshots/mobil-390x844-profilvelger.png`
+- [x] `docs/qa/screenshots/mobil-390x844-modulvalg.png`
+- [x] `docs/qa/screenshots/mobil-390x844-letters.png`
+- [x] `docs/qa/screenshots/mobil-390x844-math.png`
+- [x] `docs/qa/screenshots/mobil-390x844-progresjon.png`
+
+### iPad 768×1024
+- [x] `docs/qa/screenshots/ipad-768x1024-profilvelger.png`
+- [x] `docs/qa/screenshots/ipad-768x1024-modulvalg.png`
+- [x] `docs/qa/screenshots/ipad-768x1024-letters.png`
+- [x] `docs/qa/screenshots/ipad-768x1024-math.png`
+- [x] `docs/qa/screenshots/ipad-768x1024-progresjon.png`
+
+### iPad 1024×768
+- [x] `docs/qa/screenshots/ipad-1024x768-profilvelger.png`
+- [x] `docs/qa/screenshots/ipad-1024x768-modulvalg.png`
+- [x] `docs/qa/screenshots/ipad-1024x768-letters.png`
+- [x] `docs/qa/screenshots/ipad-1024x768-math.png`
+- [x] `docs/qa/screenshots/ipad-1024x768-progresjon.png`
 
 ## Vurdering akkurat nå
 
-Status er **betydelig nærmere release candidate**, men issue #1 er **ikke ferdig** fordi følgende fortsatt mangler eller er blokkert:
-- grønn Playwright-kjøring med faktisk browser-runtime
-- manuell viewport-/QA-dokumentasjon og skjermbilder
-- Lighthouse-bevis
-- deploy/herding (Dockerfile/Coolify/runbook)
+Status er nå **release candidate-nær** på app/logikk og testgrunnmur:
+- alle automatiske gates i lokal kjøring er grønne
+- e2e-suiten er grønn
+- viewport-bevis er lagret for mobil og begge iPad-retninger
+- Dockerfile finnes allerede i repoet
+
+Det som fortsatt gjenstår før hele epic #1 kan regnes som helt ferdig:
+- WebKit/Safari-spesifikk verifisering
+- stress-test / console-clean-bevis
+- Lighthouse-målinger
+- faktisk Coolify-deploy med URL og verifisering etter deploy
 
 ## Anbefalt neste steg
 
-1. Kjør i miljø med Playwright systemavhengigheter tilgjengelig, eller installer host-bibliotekene (`libnspr4.so` m.fl.)
-2. Kjør `npm run test:e2e` til grønt og lagre artefakter/skjermbilder
-3. Fullfør mobil/iPad/Safari-verifisering og legg inn faktisk bevis
-4. Ta Docker/Coolify/deploy som siste release-gate
+1. Kjør WebKit-/Safari-verifisering og dokumenter eventuelle touch-avvik
+2. Kjør Lighthouse og legg inn faktiske tall i denne filen
+3. Gjør enkel stress-test av raske runder i Letters og Math
+4. Fullfør Coolify-deploy og post URL + verifisering i issue-kommentar

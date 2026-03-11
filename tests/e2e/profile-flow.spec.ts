@@ -24,9 +24,9 @@ test('kan opprette profil og velge avatar', async ({ page }) => {
   await page.getByRole('button', { name: 'Enhjørningen' }).click();
   await page.getByRole('button', { name: 'Lagre ny profil' }).click();
 
-  await expect(page.getByText('Mia')).toBeVisible();
+  await expect(page.getByRole('button', { name: /Mia 6 år · Nysgjerrig/ })).toBeVisible();
   await expect(page.getByText('Aktiv profil: Mia')).toBeVisible();
-  await expect(page.getByText('6 år · Nysgjerrig')).toBeVisible();
+  await expect(page.getByText('6 år · Nysgjerrig').first()).toBeVisible();
 });
 
 test('kan bytte profil', async ({ page }) => {
@@ -45,7 +45,7 @@ test('kan fullføre letters-øvelse og se progresjon oppdatert', async ({ page }
   const target = prompt?.match(/Finn bokstaven\s+(.+)$/)?.[1]?.trim();
   expect(target).toBeTruthy();
 
-  await page.getByRole('button', { name: target! }).click();
+  await page.getByRole('button', { name: target!, exact: true }).click();
   await expect(page.getByText('Riktig! Du fant riktig bokstav.')).toBeVisible();
   await expect(page.getByText('2 / 12 stjerner')).toBeVisible();
 
