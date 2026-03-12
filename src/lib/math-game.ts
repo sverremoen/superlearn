@@ -18,6 +18,17 @@ export type SumChallenge = {
   hint: string;
 };
 
+export type MultiplicationChallenge = {
+  kind: 'multiply';
+  prompt: string;
+  left: number;
+  right: number;
+  operator: '×';
+  answer: number;
+  choices: number[];
+  hint: string;
+};
+
 function rangeByAge(age: number) {
   if (age <= 5) {
     return { maxCount: 10, maxValue: 10 };
@@ -78,6 +89,26 @@ export function createSumChallenge(age: number, step = 0): SumChallenge {
     answer,
     choices,
     hint: operator === '+' ? 'Legg sammen begge tallene.' : 'Ta bort det siste tallet.',
+  };
+}
+
+export function createMultiplicationChallenge(age: number, step = 0): MultiplicationChallenge {
+  const { maxValue } = rangeByAge(age);
+  const maxFactor = age <= 5 ? 3 : age <= 7 ? 5 : 10;
+  const left = (step % maxFactor) + 1;
+  const right = ((step + age) % maxFactor) + 1;
+  const answer = left * right;
+  const choices = rotate(buildChoices(answer, maxValue), step + age + 1);
+
+  return {
+    kind: 'multiply',
+    prompt: `${left} × ${right}`,
+    left,
+    right,
+    operator: '×',
+    answer,
+    choices,
+    hint: 'Tenk på gange som gjentatt pluss.',
   };
 }
 

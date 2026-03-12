@@ -7,7 +7,7 @@ Denne sjekklisten dokumenterer faktisk verifisering utført i repoet og hva som 
 ## Automatiske quality gates
 
 - [x] `npm test` grønn
-  - Resultat: **30 tester grønne**
+  - Resultat: **32 tester grønne**
 - [x] `npm run test:e2e` grønn
   - Resultat: **6/6 Playwright-flows grønne**
 - [x] `npm run lint` grønn
@@ -18,7 +18,7 @@ Denne sjekklisten dokumenterer faktisk verifisering utført i repoet og hva som 
 
 ```text
 npm run test:e2e   -> 6 passed
-npm test           -> 30 passed
+npm test           -> 32 passed
 npm run lint       -> ok
 npm run typecheck  -> ok
 npm run build      -> ok
@@ -40,6 +40,7 @@ npm run build      -> ok
 
 ### 4. Fullføre math-øvelse og se progresjon oppdatert
 - [x] Playwright-flow kjørt grønt
+- [x] Verifiserer både «Tell og velg» og «Multiplikasjon» i samme flyt
 - [x] Progresjon oppdateres på hjemskjerm etter retur
 
 ### 5. Refresh/restart: progresjon beholdes

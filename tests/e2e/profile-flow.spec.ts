@@ -58,13 +58,23 @@ test('kan fullføre math-øvelse og se progresjon oppdatert', async ({ page }) =
   await expect(page.getByRole('heading', { name: /Hei, Ada!/ })).toBeVisible();
   await expect(page.getByText('0 / 12 stjerner')).toBeVisible();
 
-  const answers = page.locator('button.min-h-24');
-  await answers.last().click();
+  const countAnswers = page.locator('button.min-h-24');
+  await countAnswers.last().click();
   await expect(page.getByText('Riktig! Du telte helt riktig.')).toBeVisible();
   await expect(page.getByText('2 / 12 stjerner')).toBeVisible();
 
+  await page.getByRole('button', { name: 'Multiplikasjon' }).click();
+  const prompt = (await page.locator('p').filter({ hasText: /×/ }).first().textContent()) ?? '';
+  const match = prompt.match(/(\d+)\s*×\s*(\d+)/);
+  expect(match).toBeTruthy();
+  const answer = Number(match![1]) * Number(match![2]);
+
+  await page.getByRole('button', { name: String(answer), exact: true }).click();
+  await expect(page.getByText('Riktig! Du løste gangestykket.')).toBeVisible();
+  await expect(page.getByText('4 / 12 stjerner')).toBeVisible();
+
   await page.getByRole('link', { name: 'Til hjem' }).click();
-  await expectStarProgress(page, 'Matte', '2 / 12 stjerner');
+  await expectStarProgress(page, 'Matte', '4 / 12 stjerner');
 });
 
 test('beholder progresjon etter refresh', async ({ page }) => {
