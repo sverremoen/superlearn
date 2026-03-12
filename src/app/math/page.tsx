@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Card, PillButton, ProgressBar, RewardBadge, Screen, SectionTitle } from '@/components/ui';
-import { createMathReward, createCountChallenge, createSumChallenge, isMathAnswerCorrect } from '@/lib/math-game';
+import { createMathReward, createCountChallenge, createMultiplicationChallenge, createSumChallenge, isMathAnswerCorrect } from '@/lib/math-game';
 import { awardModuleProgress, getActiveProfile } from '@/lib/profile-store';
 import { loadAppData, saveAppData } from '@/lib/storage';
 
@@ -50,14 +50,16 @@ export default function MathPage() {
   const [profileAge] = useState(initialState.profileAge);
   const [level, setLevel] = useState(initialState.level);
   const [totalStars, setTotalStars] = useState(initialState.totalStars);
-  const [mode, setMode] = useState<'count' | 'sum'>('count');
+  const [mode, setMode] = useState<'count' | 'sum' | 'multiply'>('count');
   const [countStep, setCountStep] = useState(0);
   const [sumStep, setSumStep] = useState(0);
+  const [multiplyStep, setMultiplyStep] = useState(0);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [roundWins, setRoundWins] = useState(0);
 
   const countChallenge = useMemo(() => createCountChallenge(profileAge, countStep), [profileAge, countStep]);
   const sumChallenge = useMemo(() => createSumChallenge(profileAge, sumStep), [profileAge, sumStep]);
+  const multiplicationChallenge = useMemo(() => createMultiplicationChallenge(profileAge, multiplyStep), [profileAge, multiplyStep]);
 
   function syncProfileMeta() {
     const data = loadAppData(window.localStorage);
@@ -98,6 +100,20 @@ export default function MathPage() {
     setFeedback(`Nesten. ${sumChallenge.hint}`);
   }
 
+  function handleMultiplicationAnswer(choice: number) {
+    if (isMathAnswerCorrect(multiplicationChallenge.answer, choice)) {
+      const reward = createMathReward(true);
+      saveMathRound(reward.stars, reward.stickers);
+      setFeedback('Riktig! Du løste gangestykket.');
+      setRoundWins((current) => current + 1);
+      setMultiplyStep((current) => current + 1);
+      syncProfileMeta();
+      return;
+    }
+
+    setFeedback(`Nesten. ${multiplicationChallenge.hint}`);
+  }
+
   if (!ready) {
     return (
       <Screen>
@@ -116,7 +132,7 @@ export default function MathPage() {
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-500">Matte</p>
           <h1 className="text-3xl font-black text-slate-900">Hei, {profileName}!</h1>
-          <p className="mt-1 text-slate-600">To enkle mattespill med tydelige valg og lagret progresjon.</p>
+          <p className="mt-1 text-slate-600">Tre enkle mattespill med tydelige valg og lagret progresjon.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <RewardBadge icon="⭐" label="Stjerner" value={totalStars} />
@@ -134,6 +150,9 @@ export default function MathPage() {
               </PillButton>
               <PillButton className={mode === 'sum' ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-900'} onClick={() => setMode('sum')}>
                 Pluss og minus
+              </PillButton>
+              <PillButton className={mode === 'multiply' ? 'bg-sky-500 text-white' : 'bg-slate-100 text-slate-900'} onClick={() => setMode('multiply')}>
+                Multiplikasjon
               </PillButton>
               <div className="rounded-[1.5rem] bg-white/80 p-4">
                 <p className="text-sm font-semibold text-slate-600">Progresjon i matte</p>
@@ -180,7 +199,7 @@ export default function MathPage() {
               ))}
             </div>
           </Card>
-        ) : (
+        ) : mode === 'sum' ? (
           <Card className="bg-gradient-to-br from-cyan-50 to-teal-50">
             <SectionTitle title="Pluss og minus" detail="Velg svaret som passer" />
             <div className="mt-5 rounded-[2rem] bg-white p-5 text-center shadow-sm">
@@ -194,6 +213,27 @@ export default function MathPage() {
                   key={choice}
                   className="min-h-24 rounded-[2rem] bg-white text-4xl font-black text-slate-900 shadow-sm ring-1 ring-slate-100 transition active:scale-[0.98]"
                   onClick={() => handleSumAnswer(choice)}
+                  type="button"
+                >
+                  {choice}
+                </button>
+              ))}
+            </div>
+          </Card>
+        ) : (
+          <Card className="bg-gradient-to-br from-teal-50 to-emerald-50">
+            <SectionTitle title="Multiplikasjon" detail="Velg riktig svar på gangestykket" />
+            <div className="mt-5 rounded-[2rem] bg-white p-5 text-center shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-600">Oppgave</p>
+              <p className="mt-3 text-5xl font-black text-slate-900 sm:text-6xl">{multiplicationChallenge.prompt}</p>
+              <p className="mt-3 text-base text-slate-600">Hint: {multiplicationChallenge.hint}</p>
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {multiplicationChallenge.choices.map((choice) => (
+                <button
+                  key={choice}
+                  className="min-h-24 rounded-[2rem] bg-white text-4xl font-black text-slate-900 shadow-sm ring-1 ring-slate-100 transition active:scale-[0.98]"
+                  onClick={() => handleMultiplicationAnswer(choice)}
                   type="button"
                 >
                   {choice}

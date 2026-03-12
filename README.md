@@ -10,9 +10,10 @@ Kjernen er nå spillbar:
 - **Bokstaver** med to spillmodi:
   - bokstavjakt
   - bygg ord
-- **Matte** med to spillmodi:
+- **Matte** med tre spillmodi:
   - tell og velg
   - pluss og minus
+  - multiplikasjon
 - stjerner og klistremerker per profil
 - robust lokal persistering med migrering/fallback
 - error/fallback-UI for ødelagt lagring og runtime-feil

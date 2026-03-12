@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createCountChallenge, createMathReward, createSumChallenge, isMathAnswerCorrect } from '@/lib/math-game';
+import { createCountChallenge, createMathReward, createMultiplicationChallenge, createSumChallenge, isMathAnswerCorrect } from '@/lib/math-game';
 
 describe('math game', () => {
   it('creates count challenge with matching visual and answer', () => {
@@ -34,6 +34,19 @@ describe('math game', () => {
   it('keeps all answer choices unique', () => {
     const challenge = createSumChallenge(8, 3);
     expect(new Set(challenge.choices).size).toBe(challenge.choices.length);
+  });
+
+  it('creates multiplication challenge with answer in choices', () => {
+    const challenge = createMultiplicationChallenge(8, 2);
+    expect(challenge.operator).toBe('×');
+    expect(challenge.answer).toBe(challenge.left * challenge.right);
+    expect(challenge.choices).toContain(challenge.answer);
+  });
+
+  it('keeps multiplication range kid-friendly for young profiles', () => {
+    const challenge = createMultiplicationChallenge(4, 5);
+    expect(challenge.left).toBeLessThanOrEqual(3);
+    expect(challenge.right).toBeLessThanOrEqual(3);
   });
 
   it('validates math answers', () => {
