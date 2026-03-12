@@ -110,7 +110,7 @@ Det som fortsatt gjenstår før hele epic #1 kan regnes som helt ferdig:
 - Lighthouse-målinger
 - faktisk Coolify-deploy med URL og verifisering etter deploy
   - Første Coolify-deploy bygget image og startet container, men standard healthcheck feilet fordi runtime-imaget manglet `curl`/`wget`
-  - Dockerfile er oppdatert for å gjøre standard Coolify-healthcheck realistisk i neste deploy
+  - Dockerfile er oppdatert til å inkludere begge verktøyene for å gjøre standard Coolify-healthcheck realistisk i neste deploy
 
 ## Anbefalt neste steg
 

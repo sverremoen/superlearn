@@ -76,7 +76,7 @@ docker run --rm -p 3000:3000 -e PORT=3000 superlearn
 For Coolify:
 - bygg direkte fra repoet med `Dockerfile`
 - sett eventuelt `PORT=3000` eksplisitt
-- runtime-imaget inkluderer `curl` slik at Coolify sin standard healthcheck kan verifisere `GET /`
+- runtime-imaget inkluderer `curl` og `wget` slik at Coolify sin standard healthcheck kan verifisere `GET /`
 - health/smoke-check: åpne `/` og verifiser profilvelger + modulkort
 
 ## Playwright-miljø
